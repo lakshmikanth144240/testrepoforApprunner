@@ -1,0 +1,196 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!--<link rel="stylesheet" href="style.css">-->
+    <style>
+           .container-1, .container-2, .container-3{
+    border: 1px solid royalblue;
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+}
+        
+.flex-box-container-1, .flex-box-container-2, .flex-box-rps{
+    display: flex;
+    border: 2px solid black;
+    padding: 10px;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;}
+
+.flex-box-container-1 div{
+    display: flex;
+    padding: 10px;
+    border: 1px solid black;
+    align-items:center;
+}
+
+
+
+.flex-box-container-2 img {
+    border: 1px solid green;
+    margin: 10px;
+    flex-wrap: wrap;
+    box-shadow: 0px 10px 50px rgba(0,0,0,0.7);
+}
+        
+    </style>
+    <title>jod is great</title>
+</head>
+<body>
+  <div class="container-1">
+    <h2>jod lucky</h2> 
+    <h1>age in days</h1>
+        <div class="flex-box-container-1">
+          <div>
+            <button class="btn btn-Primary" onclick="AgeInDays()">click me</button>
+          </div>
+          <div>
+            <button class="btn btn-Danger" onclick="reset()">reset</button>
+          </div>
+          
+        </div>
+        <div class="flex-box-container-1">
+          <div id="flex-box-result"></div>
+        </div>
+    </div>
+    
+    <div class="container-2">
+      <h1> gif generator</h1>
+      <button class="btn btn-success" id="gif-generator" onclick="generategif()">Generate</button>
+      <div class="flex-box-container-2" id="flex-gif-gen">
+
+      </div>
+    </div> 
+    <div class="container-3">
+      <h2>jod game bro</h2>
+      <div class="flex-box-rps" id="flex-box-rps-div">
+        <img id= "rock" src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Logan_Rock_Treen_closeup.jpg" height=150 width= 150 alt="" onclick="rpsgame(this)">
+        <img id="paper"  src="https://img.freepik.com/free-vector/a4-paper-mockup_1017-7639.jpg?size=338&ext=jpg" height=150 width=150 alt="" onclick="rpsgame(this)">
+        <img id="scissors"  src="https://www.ikea.com/us/en/images/products/sy-scissors__0112301_PE263788_S5.JPG?f=s" height=150 width=150   alt="" onclick="rpsgame(this)">
+      
+      </div>
+    </div>
+    <script>
+         // YOUR AGE IN DAYS
+
+
+
+  function AgeInDays () {
+      var birthyear = prompt("what year you were born.. kid??");
+      var AgeInDaysss =(2020-birthyear ) *365;
+      var h1 = document.createElement( 'h1');
+      var textAnswer = document.createTextNode('you are'+ '  ' +AgeInDaysss + '' +'  days older');
+      h1.setAttribute('id' , 'AgeInDays');
+      h1.appendChild(textAnswer);
+      document.getElementById('flex-box-result').appendChild(h1);
+    
+  }
+
+  function reset() {
+      document.getElementById('AgeInDays').remove();
+  }
+ 
+
+  // gif generator
+
+
+  
+  function generategif() {
+      var image = document.createElement('img');
+      var div = document.getElementById ('flex-gif-gen');
+      image.src="https://media1.tenor.com/images/e26ceae79284abb54ff5a2639d886515/tenor.gif?itemid=18321809";
+      div.appendChild(image);
+
+  }
+
+  
+
+  // ROCK PAPER SCISSORS
+
+ 
+  function rpsgame(yourChoice){
+      console.log (yourChoice);
+      var humanChoice, BotChoice;
+      humanChoice = yourChoice.id;
+      BotChoice = numberToChoice (randToRpsInt());
+      console.log ('Computer choice :', BotChoice);
+      
+      results = decideWinner (humanChoice, BotChoice);    // [0,1] human lost | bot won
+      console.log(results);
+
+      message = finalMessage(results);   //{'message': 'You won!' , 'color' : 'green'}
+      console.log(message);
+       rpsFrontEnd(yourChoice.id, BotChoice, message);
+
+
+  }
+    
+  function randToRpsInt(){
+      return Math.floor(Math.random() *3);
+
+  }
+
+  function numberToChoice(number){
+      return ['rock', 'paper', 'scissors'][number]; 
+    
+  }
+  function decideWinner(yourChoice, computerChoice){
+      var rpsDatabase = {
+          'rock' : {'scissors': 1, 'rock': 0.5, 'paper' :0},
+          'paper' : {'rock':1, 'paper':0.5, 'scissors':0},
+          'scissors': {'paper':1, 'scissors':0.5, 'rock':0}
+
+      };
+       
+      var yourScore = rpsDatabase[yourChoice][computerChoice];
+      var computerScore = rpsDatabase[computerChoice][yourChoice];
+      
+      return [yourScore, computerScore];
+    }
+
+    function finalMessage( [yourScore, computerScore]) {
+        if (yourScore === 0){
+            return {'message': 'You Lost!','color':'red'};
+        }if(yourScore === 0.5) {
+            return{ 'messsage': 'You Tied!', 'color':'yellow'};
+        }else  {
+            return { 'message': 'You Won!', 'color': 'green'};
+        }
+    }
+
+    function rpsFrontEnd(humanImageChoice, botImageChoice, finalMessage){
+        var imageDatabase = {
+            'rock': document.getElementById('rock').src,
+            'paper': document.getElementById('paper').src,
+            'scissors': document.getElementById('scissors').src
+        }
+        // let's remove all the elements
+        document.getElementById('rock').remove();
+        document.getElementById('paper').remove();
+        document.getElementById('scissors').remove();
+
+        var humanDiv = document.createElement('div');
+        var botDiv = document.createElement('div');
+        var messageDiv = document.createElement('div');
+
+        humanDiv.innerHTML = "<img src='" + imageDatabase[humanImageChoice] + " ' height=150 width=150 style= 'box-shadow: 0px 10px 50px rgba(37, 50, 233, 1);'>"
+        messageDiv.innerHTML = "<h1 style= ' color: " + finalMessage ['color'] + "; font-size: 60px; padding : 30px; '>" + finalMessage['message']+ "</h1>"
+        botDiv.innerHTML = "<img src= '" + imageDatabase[botImageChoice]+ "' height=150 width=150 style=' box-shadow: 0px 10px 50px rgba(243, 38, 24, 1);'>"
+
+        document.getElementById('flex-box-rps-div').appendChild(humanDiv);
+        document.getElementById('flex-box-rps-div').appendChild(messageDiv);
+        document.getElementById('flex-box-rps-div').appendChild(botDiv);
+
+    }
+    
+    prompt(" Hey Jooooooooooooooooooooooooooood ");
+    prompt(" Hope you are doing great")
+        
+    </script>
+  
+   <!-- <script src="just.js"></script>-->
+</body>
+</html>
